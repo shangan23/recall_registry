@@ -63,7 +63,7 @@ GIT
 
 1. Open Command Prompt by pressing Windows + R -> Type cmd -> Press OK
 2. Install npm packages as below
-	npm install http
-	npm install shelljs
-	npm install formidable
+	1. npm install http
+	2. npm install shelljs
+	3. npm install formidable
 3. Type 
