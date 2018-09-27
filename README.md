@@ -31,6 +31,8 @@ Files inside the package
 Setup in Windows
 ---------------
 
+> Pre Requsite
+
 NodeJS
 
 1. Download nodejs from https://nodejs.org/en
@@ -57,4 +59,11 @@ GIT
 4. Type git --version -> Press enter. You should see the version down eg: git version 2.19.0.windows.1
 5. If you are not seeing the version check you have access to install in your machine and try again.
 
+> Dependent Packages
 
+1. Open Command Prompt by pressing Windows + R -> Type cmd -> Press OK
+2. Install npm packages as below
+	npm install http
+	npm install shelljs
+	npm install formidable
+3. Type 
