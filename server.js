@@ -55,15 +55,5 @@ http.createServer(function (req, res) {
 		    	res.end();
 		   }
 	     });
-/*
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('<h1>Recall Registry Cleanser</h1>');  
-    res.write('<label> Upload .xls file from recal registry</label>');
-    res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
-    res.write('<input type="file" name="filetoupload"><br><br>');
-    res.write('<input type="submit" value="Process & Download">');
-    res.write('</form>');
-    return res.end();
-*/
   }
 }).listen(3000); 
