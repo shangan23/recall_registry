@@ -1,3 +1,5 @@
+SDIR - San Diego Regional Immunization Registry
+===============================================
 Steps to install "Recall Registry Formatter"
 ============================================
 
