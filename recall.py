@@ -157,12 +157,3 @@ print 'skipped record'
 print skprecord
 print '------------- end -------------'
 print ''
-
-"""
-with open(ngfilepath) as ng:
-                            for mrn in csv.reader(ng):
-                                li = line.split(",")
-                                sdir_mrn = li[13].replace('"','').strip()
-                                if mrn[0] == sdir_mrn:
-"""
-
