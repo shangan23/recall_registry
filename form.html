@@ -14,7 +14,8 @@
 		<h1>Recall Registry Formatter</h1>
 		<p style="color:green"> Upload ".xls" file from Recall Registry</label>
 		<form action="fileupload" method="post" enctype="multipart/form-data">
-			<input type="file" name="filetoupload"><br><br>		
+			SDIR file: <input type="file" name="sdirfile" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"><br><br>		
+			NG file: <input type="file" name="ngfile" accept=".csv"><br><br>
 			<input type="submit" value="Process & Download">
 		</form>
 	</body>

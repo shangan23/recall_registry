@@ -5,6 +5,11 @@ zipcode9 = re.compile(r'(\d{5}(:?[-\s]?)\d{4})')
 zipcode5 = re.compile(r'(\d{5}(\-\d{4})?)')
 filepath = '/opt/recall_registry/fileupload/'
 filename = sys.argv[1]
+ngname = sys.argv[2]
+
+print "xls file :" + filename
+print "csv file :" + ngname
+
 xlsfilepath = filepath + filename
 basename = os.path.splitext(os.path.basename(xlsfilepath))[0]
 
@@ -26,6 +31,8 @@ filename = basename +'.csv'
 outfilename = 'output_' + filename
 infilepath = filepath + filename
 outfilepath = filepath + outfilename
+ngfilepath = filepath + ngname
+
 emptyline = ["","","","","","","","","","","","","",""]
 pat = {}
 addr = {}
@@ -115,6 +122,7 @@ for l in reader:
         pat['name'] = l[5] + ' ' + l[3]
         pat['phone']  =  l[11].strip().replace(' ','') if l[11] != '' else l[11].strip().replace(' ','')
         pat['address_line'] = l[9]
+        pat['mrn'] = l[13]
         patlist.append(dict(pat))
     i += 1
 
@@ -123,20 +131,38 @@ Final output csv with desired output
 """
 
 with open(downloadfilepath, 'w') as csvfile:
-    fieldnames = ['name','address_line', 'city', 'state', 'zipcode','phone','age_in_month','msg_name']
+    fieldnames = ['name','address_line', 'city', 'state', 'zipcode','phone','age_in_month','msg_name','mrn']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     k = 0
-    #writer.writeheader()
     for r in patlist:
-        #print r
-        #print addrlist[k]
-        writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose'})
-        k += 1
+        mrn_found = 0
+        with open(ngfilepath) as ng:
+            for mrn in csv.reader(ng):
+                if mrn[0] == r['mrn']:
+                    mrn_found = 1
+        if mrn_found == 1:
+            writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
+            k += 1
+
+skprecord = len(addrlist) - k
 
 print 'Processing completed'
 print 'address'
 print  len(addrlist)
 print 'patient'
 print len(patlist)
+print 'processed record'
+print k
+print 'skipped record'
+print skprecord
 print '------------- end -------------'
 print ''
+
+"""
+with open(ngfilepath) as ng:
+                            for mrn in csv.reader(ng):
+                                li = line.split(",")
+                                sdir_mrn = li[13].replace('"','').strip()
+                                if mrn[0] == sdir_mrn:
+"""
+
