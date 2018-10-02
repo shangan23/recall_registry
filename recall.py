@@ -136,11 +136,13 @@ with open(downloadfilepath, 'w') as csvfile:
     k = 0
     for r in patlist:
         mrn_found = 0
-        with open(ngfilepath) as ng:
-            for mrn in csv.reader(ng):
-                if mrn[0] == r['mrn']:
-                    mrn_found = 1
-        if mrn_found == 1:
+        if r['mrn'] != '':
+            with open(ngfilepath) as ng:
+                for mrn in csv.reader(ng):
+                    if mrn[0] == r['mrn']:
+                        mrn_found = 1
+                        break
+        if mrn_found == 1 or r['mrn'] == '':
             writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
             k += 1
 
