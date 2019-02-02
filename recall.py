@@ -133,8 +133,7 @@ Final output csv with desired output
 with open(downloadfilepath, 'w') as csvfile:
     fieldnames = ['name','address_line', 'city', 'state', 'zipcode','phone','age_in_month','msg_name','mrn']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-    k = 0
-    for r in patlist:
+    for k,r in enumerate(patlist):
         mrn_found = 0
         if r['mrn'] != '':
             with open(ngfilepath) as ng:
@@ -144,8 +143,7 @@ with open(downloadfilepath, 'w') as csvfile:
                         break
         if mrn_found == 1 or r['mrn'] == '':
             writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
-            k += 1
-
+    
 skprecord = len(addrlist) - k
 
 print 'Processing completed'
