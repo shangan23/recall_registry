@@ -142,7 +142,15 @@ with open(downloadfilepath, 'w') as csvfile:
                         mrn_found = 1
                         break
         if mrn_found == 1 or r['mrn'] == '':
-            writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
+            can_communicate = True;            
+            
+            if (r['address_line'] == '' and addrlist[k]['city'] == '' and addrlist[k]['state'] == '' and addrlist[k]['zipcode'] == '' and r['phone'] == ''):
+                can_communicate = False;
+            elif ((r['address_line'] == '' and addrlist[k]['city'] == '' and addrlist[k]['state'] == '' and addrlist[k]['zipcode'] == '') or r['phone'] != ''):
+                can_communicate = True;
+                
+            if can_communicate == True:
+                writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
     
 skprecord = len(addrlist) - k
 
