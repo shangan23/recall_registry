@@ -142,17 +142,20 @@ with open(downloadfilepath, 'w') as csvfile:
                         mrn_found = 1
                         break
         if mrn_found == 1 or r['mrn'] == '':
-            can_communicate = True;            
+            incomplete_address = False
+            can_communicate = True;
             
-            if (r['address_line'] == '' and addrlist[k]['city'] == '' and addrlist[k]['state'] == '' and addrlist[k]['zipcode'] == '' and r['phone'] == ''):
+            if (r['address_line'] == '' or addrlist[k]['city'] == '' or addrlist[k]['state'] == '' or addrlist[k]['zipcode'] == ''):
+                incomplete_address = True
+         
+            if ( incomplete_address == True and r['phone'] == ''):
                 can_communicate = False;
-            elif ((r['address_line'] == '' and addrlist[k]['city'] == '' and addrlist[k]['state'] == '' and addrlist[k]['zipcode'] == '') or r['phone'] != ''):
-                can_communicate = True;
-                
+
             if can_communicate == True:
                 writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
-    
-skprecord = len(addrlist) - k
+                processed_record += 1
+
+skprecord = len(addrlist) - processed_record
 
 print 'Processing completed'
 print 'address'
@@ -160,7 +163,7 @@ print  len(addrlist)
 print 'patient'
 print len(patlist)
 print 'processed record'
-print k
+print processed_record
 print 'skipped record'
 print skprecord
 print '------------- end -------------'
