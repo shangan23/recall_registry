@@ -134,23 +134,27 @@ with open(downloadfilepath, 'w') as csvfile:
     fieldnames = ['name','address_line', 'city', 'state', 'zipcode','phone','age_in_month','msg_name','mrn']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     for k,r in enumerate(patlist):
-        mrn_found = 0
         if r['mrn'] != '':
             with open(ngfilepath) as ng:
-                for mrn in csv.reader(ng):
-                    if mrn[0] == r['mrn']:
-                        mrn_found = 1
+                for mrn in csv.reader(ng, lineterminator='\n'):
+                    if mrn[0].strip() == r['mrn'].strip():
+                        incomplete_address = False
+                        if (r['address_line'] == '' or addrlist[k]['city'] == '' or addrlist[k]['state'] == '' or addrlist[k]['zipcode'] == ''):
+                            incomplete_address = True
+                        can_communicate = True;
+                        if ( incomplete_address == True and r['phone'] == ''):
+                            can_communicate = False;
+                        if can_communicate == True:
+                            writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
+                            processed_record += 1
                         break
-        if mrn_found == 1 or r['mrn'] == '':
+        else:
             incomplete_address = False
-            can_communicate = True;
-            
             if (r['address_line'] == '' or addrlist[k]['city'] == '' or addrlist[k]['state'] == '' or addrlist[k]['zipcode'] == ''):
                 incomplete_address = True
-         
+            can_communicate = True;
             if ( incomplete_address == True and r['phone'] == ''):
                 can_communicate = False;
-
             if can_communicate == True:
                 writer.writerow({'name': r['name'], 'address_line': r['address_line'], 'city': addrlist[k]['city'], 'state': addrlist[k]['state'], 'zipcode': addrlist[k]['zipcode'], 'phone': r['phone'], 'age_in_month': 8, 'msg_name':'Missed Dose','mrn':r['mrn']})
                 processed_record += 1
